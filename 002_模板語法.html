@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- 引入 vue3 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <!-- Vue 模板語法 1 .插值語法 -->
+    <div class="box1">
+        {{ message }}
+        <p> {{user.name}} {{user.info}} </p>
+    </div>
+
+    <!-- Vue 模板語法 1 .指令語法 v-bind -->
+    <div class="box2">
+        <!-- v-bind 可以綁定很多屬性  -->
+
+        <!-- 例如 url -->
+        <a v-bind:href="url">綁定 url</a>
+
+        <!-- 綁定行內樣式 -->
+        <p v-bind:style="p_style">綁定(行內)樣式</p>
+        <!-- 綁定行內樣式的另一種方法 -->
+        <span v-bind:style="{'font-size': fontSize + 'px', color : theme}">綁定(行內)樣式</span>
+
+        <!-- 綁定 class 類別 -->
+        <p v-bind:class="child">綁定 class 屬性</p>
+    </div>
+
+
+    <script>
+        const box1 = Vue.createApp({
+            data() {
+                return {
+                    message: 'hi',
+                    user: {
+                        name: 'yukina',
+                        info: 'student',
+                    }
+                }
+            },
+        });
+        box1.mount('.box1');
+
+        let inlineBlock = 'display: inline-block';
+
+        const box2 = Vue.createApp({
+            data() {
+                return {
+                    // 綁定 url
+                    url: 'https://cn.vuejs.org/api/built-in-directives.html#v-bind',
+
+                    // ! 在綁定 style 時須注意，有 - 連起來的樣式須改為 駝峰命名
+                    // ~ 例如 CSS 中 font-size 需改為 fontSize 
+                    p_style: {
+                        inlineBlock,
+                        width: '300px',
+                        height: '200px',
+                        fontSize: '30px',
+                        background: '#e4e4e4',
+                    },
+                    // 也可以直接給值
+                    fontSize: 30,
+                    theme: 'pink',
+
+                    // 綁定 class 
+                    child: 'box2--child',
+                }
+            }
+        }).mount('.box2');
+    </script>
+</body>
+
+</html>
