@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>雙向數據綁定</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+
+<body>
+    <div class="box1">
+        <!-- 將 input 框雙向綁定 count -->
+        <!-- 在 count 變動時也會一起變動 -->
+        雙向綁定 v-model: <input type="text" v-model="count" v-bind:class="display">
+        <!-- 單向綁定 v-bind: <input type="text" v-bind="count" v-bind:class="display"> -->
+        <p>message is : {{ count }}</p>
+
+        <!-- ?  另外 v-model 也可以添加修飾字 -->
+
+        <!-- .lazy 為監聽 change 事件，而不是 input 事件 -->
+        <!-- change 事件會在點擊/離開輸入框時觸發，input 事件為每偵測到輸入時觸發 -->
+        v-model.lazy : <input type="text" v-model.lazy="message.lazy">
+        <p>message is : {{ message.lazy }} </p>
+
+        <!-- .number 可以只留下數字，過濾掉其他符號 -->
+        v-model.number : <input type="text" v-model.number="message.number">
+        <p>message is : {{ message.number }} </p>
+
+        <!-- .trim 可以移除內容兩端空格(避免使用者多輸入空格) -->
+        v-model.trim : <input type="text" v-model="message.trim">
+        <p>message is : {{ message.trim }} </p>
+    </div>
+
+    <script>
+        let block = 'display: inline-block';
+
+        const box1 = Vue.createApp({
+            data() {
+                return {
+                    count: 1,
+                    display: {
+                        block
+                    },
+                    message: {
+                        lazy: '.lazy',
+                        number: 10,
+                        trim: '.trim',
+                    },
+                }
+            },
+        });
+        box1.mount('.box1');
+    </script>
+</body>
+
+</html>
