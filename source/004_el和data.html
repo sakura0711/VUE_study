@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- 引入 Css 樣式-->
+
+</head>
+
+<body>
+
+    <div class="box1">
+        {{ DOMmethod1 }}
+    </div>
+
+    <div class="box2">
+        {{ DOMmethod2 }}
+    </div>
+
+    <div class="box3">
+        {{ dataMethod1 }}
+    </div>
+
+    <div class="box4">
+        {{ dataMethod2 }}
+    </div>
+
+    <script>
+
+        // DOM 掛載元素 (方法一) 
+        // !!!! warning 此方法已在 vue3 被移除 
+        const app_DOM1 = Vue.createApp({
+            el: '.box1',
+            data() {
+                return { DOMmethod1: 'DOM-method1 use el: 掛載 DOM 元素', }
+            },
+        });
+
+        // DOM 掛載元素 (方法二)
+        const app_DOM2 = Vue.createApp({
+            data() {
+                return { DOMmethod2: 'DOM-method2 use .mount() 掛載 DOM 元素' }
+            },
+        });
+        app_DOM2.mount('.box2'); // 將 app2 掛載至 DOM
+
+        // data 的宣告方式 (方法一)
+        // !!!! warning 此方法已在 vue3 被移除 
+        // const app_data1 = Vue.createApp({
+        //     data: {
+        //         dataMethod1: 'data-method use data:{} (表示式)'
+        //     }
+
+        // });
+        // app_data1.mount('.box3');
+
+        // data 的宣告方式 (方法一)
+
+        const app_data2 = Vue.createApp({
+            data() {
+                return { dataMethod2: 'data-method use data(){ return } (函數式)', };
+            }
+        });
+        app_data2.mount('.box4');
+    </script>
+</body>
+
+</html>
