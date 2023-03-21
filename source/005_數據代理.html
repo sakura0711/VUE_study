@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    !
+</head>
+
+<body>
+    <script>
+        const PrintObject = () => {
+            console.log(Object.keys(person));
+        }
+        // 創建數組
+        let person = {
+            name: 'sakura',
+            sex: 'female',
+        };
+        console.log(`person: ${person}`);
+        PrintObject(person);
+
+        // 使用 Object.defineProperty (數組名稱 , 添加的值 , { 設定 }) ! 只能定義單個值
+        Object.defineProperty(person, 'age', {
+            value: 19,
+            // 使用 Object.defineProperty 時，該值預設無法遍歷
+            writable: true, // set屬性是否可改值
+            enumerable: true, // 設定為 true 就可以遍歷
+            configurable: false, // 是否可改變該屬性的特徵 / 刪除該屬性
+        });
+        console.log(`person: ${person}`);
+        PrintObject(person);
+
+        // 要宣告多個 object 時可以使用 Object.defineProperties() 方法相同於上方
+        Object.defineProperties(person, {
+            'address': {
+                value: '香菇街貓咪巷 38 號',
+                writable: false,
+                enumerable: true,
+            },
+        });
+        console.log(`person: ${person}`);
+        PrintObject(person);
+
+        // 另外 object.defineProperty 可以使用 get set 屬性
+        let phoneNumber = '0932332576';
+        Object.defineProperty(person, 'phoneNumber', {
+            // get 在讀取該屬性時觸發
+            get() {
+                console.log('phoneNumber 的 get() 觸發');
+                return phoneNumber;
+            },
+            set(value) {
+                console.log(`修改前 phoneNumber 變數 : ${phoneNumber}`);
+                console.log(`phoneNumber 的 set() 觸發, 傳入的值為: ${value}`);
+                // 將 value 值設定給 phoneNumber 
+                phoneNumber = value;
+                console.log(`修改後 phoneNumber 變數 : ${phoneNumber}`);
+            },
+        });
+
+    </script>
+</body>
+
+</html>
