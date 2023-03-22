@@ -24,6 +24,8 @@
         console.log(`person: ${person}`);
         PrintObject(person);
 
+        // !!! 在 Vue2 中，數據為 "響應式" 使用 Object.defineProperty
+        
         // 使用 Object.defineProperty (數組名稱 , 添加的值 , { 設定 }) ! 只能定義單個值
         Object.defineProperty(person, 'age', {
             value: 19,
