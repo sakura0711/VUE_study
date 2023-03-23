@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+
+    <div class="box">
+        <h2>{{ message }}</h2>
+        <button @click="changeMsg1">changeMsg1 點我!</button>
+        <!-- $event 代表 事件傳參，Vue 會預留一個位置給他 -->
+        <button @click="changeMsg2('changeMsg2 click!', $event)">changeMsg2 點我!</button>
+
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: 'hello click button?',
+                };
+            },
+            methods: {
+                // 這裡不能使用 箭頭函示，因為會指向 window
+                changeMsgArrFun: (event) => {
+                    this.value = 'button click';
+                },
+                // 必須使用一般函數
+                changeMsg1(event) {
+                    console.log(`${event}`);
+                    this.message = 'button click';
+                },
+
+                // 當有參數要傳時，可以指定多個參數 event 為 事件
+                changeMsg2(string, event) {
+                    console.log(`${event}`);
+                    this.message = string;
+                }
+                
+            },
+        });
+        app.mount('.box');
+    </script>
+</body>
+
+</html>
