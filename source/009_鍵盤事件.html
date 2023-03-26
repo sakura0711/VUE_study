@@ -27,7 +27,8 @@
              右 => right
         
          2. Vue 中未提供的可以使用按鍵原始的 key 值作綁定，但須要改為 短斜線命名 (ex. 鎖定英文大小寫 caps-lock)
-         2-1. 也可以使用 keycode 值作為參數: ex A => 65 / 0 => 96 (同 ascii 碼)
+         2-1. 也可以使用 keycode 值作為參數: ex A => 65 / 0 => 96
+         !!!!! keyCode 不推薦使用，有一部分瀏覽器已經禁用，並且有些鍵盤的 keyCode 未必相同
         
          3. 系統修飾按鍵 (用法較為特殊) : ctrl, alt, shift ...
              (1). 配合 keyup 使用: 按下的同時，需按下其他按鍵，並且釋放該鍵後，特殊鍵的事件才會被觸發
@@ -54,7 +55,7 @@
                 }
             },
             methods: {       
-                  
+
                 showInfo(event) {
                     // this.disable = true;
                     console.log(event.key, event.keyCode);
