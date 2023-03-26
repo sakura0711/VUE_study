@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        * {
+            margin: 20px;
+        }
+
+        [class^='parent'] {
+            height: 50px;
+            background-color: skyblue;
+        }
+
+        .flex {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h1>{{ helloMessage }}</h1>
+
+        <!-- # .prevent (常用) ------------------------------------------------------------------------------>
+
+        <!-- 在 a 的默認行為中，會開啟一個新的視窗並且跳轉 -->
+        <a href="https://unpkg.com/vue" @click="showInfo">點我點我，沒有添加 .prevent</a>
+
+        <!-- 在給 v-on 添加修飾符 .prevent 後，可以阻止該標籤的默認行為 相當於 js 的 event.preventDefault() -->
+        <a href="https://unpkg.com/vue" @click.prevent="showInfo">點我點我，添加 .prevent</a>
+
+
+        <!-- > # .stop (常用) --------------------------------------------------------------------------------->
+
+        <!-- 所謂的 "冒泡事件" 是指當當兩個元素都擁有事件標籤時，該事件會被觸發兩次 -->
+        <div class="parent1" @click="showInfo">
+            <button @click="showInfo">我是 child，點我(沒有添加 .stop)</button>
+        </div>
+
+        <!-- 在給 v-on 添加修飾符 .stop 後，可以阻止該標籤的冒泡事件 相當於 js 的 event.preventDefault()-->
+        <div class="parent2" @click="showInfo">
+            <button @click.stop="showInfo">我是 child，點我(添加 .stop)</button>
+        </div>
+
+
+        <!-- # .self  ----------------------------------------------------------------------->
+
+        <div class="parent1" @click="showMsg('div1')">
+            <button @click="showMsg('div2')">我是 child，點我(沒有添加 .self)</button>
+        </div>
+
+        <!-- self 是只執行當前觸發該事件的元素，該元素的 v-on 才會執行-->
+        <div class="parent2" @click.self="showMsg('div1')">
+            <button @click="showMsg('div2')">我是 child，點我(父元素添加 .self)</button>
+        </div>
+
+
+        <!-- # .once (常用) ----------------------------------------------------------------------------------->
+
+        <!-- .once 會限制該事件只能觸發一次，淺顯易懂 :D-->
+        <div class="flex">
+            <button @click="showInfo">沒有添加 .once</button>
+            <button @click.once="showInfo">添加 .once</button>
+        </div>
+
+
+        <!-- # .capture 在事件 "捕獲" 階段執行事件 -------------------------------------------------------------->
+
+        <div class="parent1" @click="showMsg('div1')">
+            <button @click="showMsg('div2')">我是 child，點我(沒有添加 .capture)</button>
+        </div>
+
+        <!-- 在給 v-on 添加修飾符 .capture 後，可以在該事件 捕獲階段時執行-->
+        <div class="parent2" @click.capture="showMsg('div1')">
+            <button @click="showMsg('div2')">我是 child，點我(父元素添加 .capture)</button>
+        </div>
+
+
+        <!-- 特定鼠標觸發 left (左鍵) / right (右鍵) / middle (中鍵) -------------------------------------------->
+        <div class="flex">
+            <button @click.left="showInfo">我只能用左鍵點</button>
+            <button @click.right="showInfo">我只能用右鍵點</button>
+            <button @click.middle="showInfo">我只能用中鍵點</button>
+        </div>
+
+
+    </div>
+
+    <script>
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    helloMessage: '事件修飾符的使用',
+                }
+            },
+            methods: {
+                showInfo() {
+                    alert('showInfo 被觸發了.')
+                },
+                showMsg(Msg) {
+                    console.log(`\t ${Msg}`);
+                }
+            },
+        });
+        app.mount('.box');
+
+    </script>
+</body>
+
+</html>
