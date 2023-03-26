@@ -36,16 +36,20 @@
 
          4. keydown 代表按鍵按下觸發 / keypress 按下 "字符键" 觸發 / keyup 代表按鍵抬起時觸發 
             先後順序 : keydown -> keypress -> keyup 
+
+         5. 可以使用自定義別名，在 Vue.config.keyCodes 中添加 !!(在 vue3 中已經移除)
+            vue3 可以直接使用按鍵名稱 ex -> @keydown.a / @keydown.G
     -->
 
     <div id="app">
         <label for="text">輸入任意按鍵</label>
         <!-- disabled 屬性可以禁用輸入框 -->
-        <input type="text" name="text" id="text" v-model="inputValue" @keydown="showInfo" :disabled="disable">
+        <input type="text" name="text" id="text" v-model="input_val" @keydown="showInfo" :disabled="disable">
         <h2>{{ show_info }}</h2>
     </div>
 
     <script>
+
         const app = Vue.createApp({
             data() {
                 return {
@@ -54,8 +58,10 @@
                     disable: false,
                 }
             },
-            methods: {       
-
+            methods: {
+                /** 
+                 * @param {String}
+                */
                 showInfo(event) {
                     // this.disable = true;
                     console.log(event.key, event.keyCode);
