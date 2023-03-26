@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+
+    <!--
+         1. Vue 中常用的鍵盤事件別名
+             確認鍵 => enter
+             刪除 => delete
+             退出 => esc
+             空格 => space
+             換行 => tab(較為特殊，須配合 keydown 作使用)
+        
+             上 => up
+             下 => down
+             左 => left
+             右 => right
+        
+         2. Vue 中未提供的可以使用按鍵原始的 key 值作綁定，但須要改為 短斜線命名 (ex. 鎖定英文大小寫 caps-lock)
+         2-1. 也可以使用 keycode 值作為參數: ex A => 65 / 0 => 96 (同 ascii 碼)
+        
+         3. 系統修飾按鍵 (用法較為特殊) : ctrl, alt, shift ...
+             (1). 配合 keyup 使用: 按下的同時，需按下其他按鍵，並且釋放該鍵後，特殊鍵的事件才會被觸發
+             (2). 配合 keydown 使用: 正常書寫即可
+
+         4. keydown 代表按鍵按下觸發 / keypress 按下 "字符键" 觸發 / keyup 代表按鍵抬起時觸發 
+            先後順序 : keydown -> keypress -> keyup 
+    -->
+
+    <div id="app">
+        <label for="text">輸入任意按鍵</label>
+        <!-- disabled 屬性可以禁用輸入框 -->
+        <input type="text" name="text" id="text" v-model="inputValue" @keydown="showInfo" :disabled="disable">
+        <h2>{{ show_info }}</h2>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    input_val: '',
+                    show_info: '',
+                    disable: false,
+                }
+            },
+            methods: {       
+                  
+                showInfo(event) {
+                    // this.disable = true;
+                    console.log(event.key, event.keyCode);
+                    // this 訪問的是上方 data 立面的 show_info
+                    this.show_info = `您剛才按下了 "${event.key}" 鍵，其編碼為 ${event.keyCode}。`;
+
+                    setTimeout(() => {
+                        this.input_val = '';
+                        // this.disable = false;
+                    }, 10);
+                }
+            },
+        });
+        app.mount('#app');
+    </script>
+</body>
+
+</html>
