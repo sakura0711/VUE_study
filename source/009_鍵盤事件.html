@@ -33,6 +33,7 @@
          3. 系統修飾按鍵 (用法較為特殊) : ctrl, alt, shift ...
              (1). 配合 keyup 使用: 按下的同時，需按下其他按鍵，並且釋放該鍵後，特殊鍵的事件才會被觸發
              (2). 配合 keydown 使用: 正常書寫即可
+         3-1. 要綁定組合鍵時，只需使用 . 相連即可偵測 (ex . @keydown.ctrl.a 要 ctrl+a 同時按下)
 
          4. keydown 代表按鍵按下觸發 / keypress 按下 "字符键" 觸發 / keyup 代表按鍵抬起時觸發 
             先後順序 : keydown -> keypress -> keyup 
@@ -44,8 +45,11 @@
     <div id="app">
         <label for="text">輸入任意按鍵</label>
         <!-- disabled 屬性可以禁用輸入框 -->
-        <input type="text" name="text" id="text" v-model="input_val" @keydown="showInfo" :disabled="disable">
+        <input type="text" name="text" id="text" v-model="input_val" @keydown="showInfo" :placeholder="placeHolder1">
         <h2>{{ show_info }}</h2>
+        <!-- key 事件也可以綁定組合鍵 -->
+        <input type="text" name="text2" id="text2" @keydown.ctrl.y="showMsg" :placeholder="placeHolder2">
+        <h2>{{ show_msg }}</h2>
     </div>
 
     <script>
@@ -55,12 +59,15 @@
                 return {
                     input_val: '',
                     show_info: '',
+                    show_msg: '',
                     disable: false,
+                    placeHolder1: '選取我之後案任意鍵',
+                    placeHolder2: '我只能使用 ctrl + y 觸發',
                 }
             },
             methods: {
                 /** 
-                 * @param {String}
+                 * @param {String} event
                 */
                 showInfo(event) {
                     // this.disable = true;
@@ -72,7 +79,12 @@
                         this.input_val = '';
                         // this.disable = false;
                     }, 10);
+                },
+                showMsg() {
+                    console.log(`showMsg trigger!`),
+                        this.show_msg = 'showMsg trigger!';
                 }
+
             },
         });
         app.mount('#app');
