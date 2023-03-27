@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        * {
+            font: 500 20px Helvetica;
+            margin: 10px;
+        }
+
+        h2 {
+            background-color: #e4e4e4;
+            border-bottom: 1px solid #777;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!-- 使用一般插值與法實現 -->
+    <div class="box1">
+        <h2>使用一般插值語法實現</h2>
+        <label for="first">first name:</label> <input type="text" name="first" id="first" v-model="Normal_firstName">
+        <br>
+        <label for="last">last name:</label> <input type="text" name="last" id="last" v-model="Normal_lastName"><br>
+        <span> Your full name : {{ Normal_firstName + '-' + Normal_lastName}} </span>
+    </div>
+
+    <!-- 使用 methods 實現 -->
+    <div class="box2">
+        <h2>使用 methods 語法實現</h2>
+        <label for="first">first name:</label> <input type="text" name="first" id="first" v-model="Method_firstName">
+        <br>
+        <label for="last">last name:</label> <input type="text" name="last" id="last" v-model="Method_lastName"><br>
+        <!-- 須注意 在插值語法{{}}中函式必須 加上 ()-->
+        <span> Your full name : {{ NameFull() }} </span>
+    </div>
+
+    <!-- 使用 computed 實現 -->
+    <div class="box3">
+        <h2>使用 computed 語法實現</h2>
+        <label for="first">first name:</label> <input type="text" name="first" id="first" v-model="Computed_firstName">
+        <br>
+        <label for="last">last name:</label> <input type="text" name="last" id="last" v-model="Computed_lastName"><br>
+        <!-- 在 computed 中的函數(計算屬性) 不須加上 () -->
+        <span> Your full name : <input type="text" name="text" id="full" :value="FullName2"></span>
+    </div>
+    <script>
+
+        // !!! 使用 methods 和 插值語法使用時 只要裡面其中一樣數據做更新，那 vue 就會重新地將模板解析一遍
+        // !!! 所以 調用會重新一直調用，會浪費許多時間
+        const box1 = Vue.createApp({
+            data() {
+                return {
+                    Normal_firstName: '',
+                    Normal_lastName: '',
+                }
+            },
+        });
+        box1.mount('.box1');
+
+        const box2 = Vue.createApp({
+            data() {
+                return {
+                    Method_firstName: '',
+                    Method_lastName: '',
+                }
+            },
+
+            methods: {
+                NameFull() {
+                    return this.Method_firstName + '-' + this.Method_lastName;
+                }
+            },
+        });
+        box2.mount('.box2');
+
+
+        // 使用 computed 時，vue 會將第一次計算的結果放在緩存中，有資料變動時會跟緩存中比對，只更改變動的部分。
+        // 能節省瀏覽器的載入時間及資源
+        const box3 = Vue.createApp({
+            data() {
+                return {
+                    Computed_firstName: 'a',
+                    Computed_lastName: 'b',
+                };
+            },
+            computed: {
+                // 函數寫法
+                FullName() {
+                    return this.Computed_firstName + '-' + this.Computed_lastName;
+                },
+                // get set 用法
+                FullName2: {
+                    // 當有人 "第一次" 調用 fullName 時， get 會觸發，
+                    // 當有人修改 "所依賴項" 時，get 也會觸發 (目前依賴項是Computed_firstName、Computed_lastName)
+
+                    ///// 重要!!!! /////
+                    // 使用 鍵頭函數時 this 訪問到的是 window 物件(全域)，而不是 box3 裡面的屬性
+                    // (x) get:() => this.Computed_firstName + '-' + this.Computed_lastName;
+
+                    // 必須使用一般函數表達
+                    get() { return this.Computed_firstName + '-' + this.Computed_lastName },
+
+                    // 當有人修改 FullName 時觸發 set
+                    set(value) {
+                        const arr = value.split('-');
+                        this.Computed_firstName = arr[0];
+                        this.Computed_lastName = arr[1];
+                    }
+                }
+            }
+        });
+        box3.mount('.box3');
+    </script>
+</body>
+
+</html>
