@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <div class="box">
+        <h2>今天的天氣是 : {{ wether }} {{ count }}</h2>
+        <!-- 只有簡單的運算式時可以直接寫 -->
+        <button @click="isHot = !isHot">切換天氣</button>
+        <!-- 但更提倡使用 函數 -->
+        <button @click="changeWeather">切換天氣</button>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    isHot: true,
+                    count: 0,
+                }
+            },
+            computed: {
+                wether() {
+                    return this.isHot ? '涼爽' : '炎熱';
+                },
+            },
+            methods: {
+                changeWeather() {
+                    this.isHot = !this.isHot
+                    this.count++;
+                }
+            }
+        });
+        app.mount('.box');
+    </script>
+</body>
+
+</html>
