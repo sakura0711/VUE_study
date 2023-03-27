@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        h2 {
+            background-color: #e4e4e4;
+            border-bottom: 1px solid #777;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="box">
+
+        <h2>監視屬性</h2>
+        <h4>今天的天氣是 : {{ wether }} {{ count }}</h4>
+        <h4>{{ fullName.firstName}} + {{ fullName.lastName}}</h4>
+        <!-- 只有簡單的運算式時可以直接寫 -->
+        <button @click="isHot = !isHot">切換天氣</button>
+        <!-- 但更提倡使用 函數 -->
+        <button @click="changeWeather">切換天氣</button>
+
+        <h2>深度監視 監聽數組 or object</h2>
+        <h4>a 的值是 {{ number.a }}</h4>
+        <button @click="number.a++">點我 a++</button>
+
+        <h4>b 的值是 {{ number.b }}</h4>
+        <button @click="number.b++">點我 b++</button>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    isHot: true,
+                    count: 0,
+                    fullName: {
+                        firstName: 'sakura',
+                        lastName: 'yukina',
+                    },
+                    number: {
+                        a: 1,
+                        b: 2,
+                        c: 3,
+                        d: 4,
+                        e: 5,
+                    }
+                }
+            },
+            computed: {
+                wether() {
+                    return this.isHot ? '涼爽' : '炎熱';
+                },
+            },
+            methods: {
+                changeWeather() {
+                    this.isHot = !this.isHot;
+                    this.fullName.firstName += 'a';
+                    this.fullName.lastName += 'a';
+                    this.count++;
+                }
+            },
+            // 另外我們可以使用 watch 監視一個屬性的變化
+            watch: {
+                // 直接寫要監視對象的名稱
+                // 在裡面寫配置項
+                isHot: {
+                    immediate: true, // 可以在頁面初始化時立即執行(通常搭配 handler 初始化)，默認為 false
+
+                    // handler 為一個內定函數，可以監測數據的變化
+                    // newValue 會回傳變動後的值 , oldValue 會回傳變動前的值
+                    handler(newValue, oldValue) {
+                        console.log(`isHot 的數據發生變動了 ，變動後的值是: ${newValue} 變動前的值是 : ${oldValue}`)
+                    }
+                },
+
+                // 也可以監視 object 中的屬性(需用 '' 包裹)
+                "fullName.lastName": {
+                    handler(newValue, oldValue) {
+                        console.log(`fullName.lastName 的數據發生變動了 ，變動後的值是: ${newValue} 變動前的值是 : ${oldValue}`);
+                    }
+                },
+
+                // 也可以監視 computed 中的值 
+                wether: {
+                    handler(newValue, oldValue) {
+                        console.log(`wether(computed) 的數據發生變動了 ，變動後的值是: ${newValue} 變動前的值是 : ${oldValue}`);
+                    }
+                },
+
+                // deep 深度監視 (用於監視 數組 or object)，默認是 false (不監測對象內部值的改變)
+                number: {
+                    deep: true, // 但會消耗大項的資源(會逐一遍歷)
+                    handler() {
+                        console.log(`number 中有變動`);
+                    }
+                },
+
+                // 另外 watch 可以有簡寫型態 (當裡面只有 handler 屬性時)
+                number(newValue, oldValue) {
+                    console.log(`${newValue} + ${oldValue}`);
+                }
+
+            }
+        });
+        app.mount('.box');
+
+        // 也可以直接在外面調用
+        // $watch 是 vue2 的用法，vue3 中可以使用 watch or watchEffect
+        // const unwatch = app.watch(
+        //     () => app.fullName.firstName,
+        //     (newValue, oldValue) => {
+        //         console.log(`fullName.firstName 的數據發生變動了 ，變動後的值是: ${newValue} 變動前的值是 : ${oldValue}`)
+        //     },
+        // );
+
+        // 取消監視
+        // unwatch();
+    </script>
+</body>
+
+</html>
