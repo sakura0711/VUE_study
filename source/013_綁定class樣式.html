@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .basic {
+            border: 5px solid rgba(0, 0, 0, 0.267);
+            border-radius: 15%;
+            width: 200px;
+            height: 100px;
+        }
+
+        .orange {
+            background: orange;
+        }
+
+        .red {
+            background: red;
+        }
+
+        .blue {
+            background: blue;
+        }
+
+        .skyblue {
+            background: skyblue;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <!-- 動態綁定 class 使用 :class-->
+        <div :class="styleClass" class="basic" @click="change_style">
+            {{ styles }}
+        </div>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    styles: 'basic',
+                    styleClass: [''],
+                }
+            },
+            methods: {
+                change_style() {
+                    const class_list = ['orange', 'red', 'blue', 'skyblue']
+                    const index = Math.floor(Math.random() * 4);
+                    this.styleClass = class_list[index];
+                    this.styles = `basic + ${this.styleClass}`;
+                },
+            },
+        });
+        app.mount('.box');
+    </script>
+</body>
+
+</html>
