@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        div[class^='box'] {
+            height: 200px;
+            width: 100vh;
+            background: pink;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 條件式渲染 -->
+    <div class="box1">
+        <!-- 使用 v-show 時，瀏覽器會解析成 style=display:none 來達到隱藏的效果 DOM 不會消失-->
+        <!-- 適用於 變化頻率較高的對象() -->
+        <h2 v-show="showFlag">我使用 v-show 來實現</h2>
+        <button @click="showFlag = !showFlag">點我</button>
+    </div>
+
+    <div class="box2">
+        <!-- 使用 v-if 時，隱藏(false)時 Vue 會自動忽略該節點DOM(節點會不存在)，顯示(true)時 節點才會生成 -->
+        <!-- ! 且 v-if 判斷群體中不允許打斷(例如添加 div) -->
+
+        <h2 v-if="ifFlag">我是使用 v-if 實現</h2>
+
+        <!-- 跟一般的程式一樣 Vue 也具有 if else-if else-->
+        <h2 v-else-if="ifFlag === 1"></h2>
+        <!-- else 裡面不能有條件 -->
+        <h2 v-else></h2>
+
+        <button @click="ifFlag = !ifFlag">點我</button>
+    </div>
+
+    <div class="box3">
+        <!-- 另外如果要區塊顯示又不想打亂結構的話可以使用 template ，在頁面 render 後 template 會自動消失-->
+        <!-- 但是只有 v-if 可以使用 template ， v-show 不行 -->
+        <template v-if="templateFlag">
+            <h2>香菇</h2>
+            <h2>貓咪</h2>
+            <h2>:D</h2>
+        </template>
+        <button @click="templateFlag = !templateFlag">click me</button>
+    </div>
+    <script>
+        const app1 = Vue.createApp({
+            data() {
+                return {
+                    showFlag: true,
+                }
+            },
+        });
+        app1.mount('.box1');
+
+        const app2 = Vue.createApp({
+            data() {
+                return {
+                    ifFlag: true,
+                }
+            }
+        });
+        app2.mount('.box2');
+
+        const app3 = Vue.createApp({
+            data() {
+                return {
+                    templateFlag: true,
+                };
+            },
+        });
+        app3.mount('.box3');
+    </script>
+</body>
+
+</html>
