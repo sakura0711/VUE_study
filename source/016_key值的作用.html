@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        * {
+            font-family: "Helvetica Neue", Helvetica;
+        }
+
+        li {
+            font: 500 20px/1.5 "Microsoft YaHei";
+        }
+
+        p {
+            color: green;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box1">
+        <h2>使用 index 值綁定 (不是唯一識別 key)</h2>
+        <p>因為 Vue 使用 "對比算法"，所以會出現 虛擬 DOM 與 真實 DOM 無法更新的情況</p>
+        <ul>
+
+            <li v-for="(p, index) in person" :key="index">
+                姓名 : {{ p.name }} 請輸入年齡 <input type="text" name="" id="">
+            </li>
+
+        </ul>
+        <button @click.once="AddPerson">點我添加新成員</button>
+
+        <h2>使用 id 值綁定 (唯一識別 key)</h2>
+        <ul>
+            <li v-for="(p, index) in person" :key="p.id">
+                姓名 : {{ p.name }} 請輸入年齡 <input type="text" name="" id="">
+            </li>
+        </ul>
+        <button @click.once="AddPerson">點我添加新成員</button>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    person: [
+                        { id: 001, name: 'John', age: 18 },
+                        { id: 002, name: 'Diva', age: 25 },
+                        { id: 003, name: 'Julie', age: 20 },
+                    ],
+                }
+            },
+            methods: {
+                AddPerson() {
+                    const person1 = { id: 004, name: 'sakura', age: 40 }
+                    this.person.unshift(person1);
+                }
+            },
+        });
+        app.mount('.box1');
+    </script>
+</body>
+
+</html>
