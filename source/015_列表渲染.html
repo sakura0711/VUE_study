@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        li {
+            font: 500 20px/1.5 "Microsoft YaHei";
+        }
+
+        i {
+            margin: 0 10px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="box">
+        <!-- 遍歷數組 -->
+        <h2>學生訊息</h2>
+        <ul>
+            <!-- v-for 返回兩個參數 第一項(item) 是遍歷的數值 第二項(index) 是索引值，並且每一個元素必須要有唯一的 key 值綁定-->
+            <li v-for="(item, index) in person" :key="index">
+                學號 :{{ item.id }}<i></i>姓名: {{item.name }} 索引值:{{ index }}
+            </li>
+        </ul>
+
+        <!-- 遍歷對象 (object) -->
+        <h2>車子訊息</h2>
+        <ul>
+            <!-- 在 object 中 第一項(value) 可以直接取出相對應的 value 值， 第二項(key) 可以取出 object 中的 key -->
+            <!-- 並且在 Vue3 中 index 可以省略 -->
+            <li v-for="(value, key, index) in car" :key="index">
+                {{ key }} : {{ item }}
+            </li>
+        </ul>
+
+        <!-- 遍歷字串 (不常使用) -->
+        <h2>遍歷字串</h2>
+        <ul>
+            <li v-for="(item, index) in stringArr" :key="index">{{ item}}</li>
+        </ul>
+    </div>
+
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    person: [
+                        { id: 221, name: 'John', age: 18 },
+                        { id: 132, name: 'Diva', age: 25 },
+                        { id: 123, name: 'Julie', age: 20 },
+                    ],
+                    car: {
+                        name: 'HONDA CR-V',
+                        price: 'NT 99.9萬',
+                        color: 'white',
+                    },
+                    stringArr: 'this is String :D',
+                }
+            },
+        });
+        app.mount('.box');
+    </script>
+</body>
+
+</html>
