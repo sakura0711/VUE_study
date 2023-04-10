@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        * {
+            font: 400 25px/1.5 sans-serif;
+        }
+
+        table td,table th {
+            padding: 0 40px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="box">
+        <label for="filter">請輸入要查詢的對象(模糊搜尋): </label><input type="text" name="filter" id="filter" v-model="keyword">
+        <p>你篩選的數據是 : {{filter}}</p>
+        <!-- <ul>
+            <li v-for="(p, index) in filPerson" :key="p.id">
+                姓名: {{ p.name }} 年齡: {{ p.age }} 性別 : {{ p.sex}}
+            </li>
+        </ul> -->
+        <table>
+            <thead>
+                <th>姓名</th>
+                <th>年齡</th>
+                <th>性別</th>
+            </thead>
+            <tbody>
+                <!-- 使用 template -->
+                <template v-for="(p, index) in fil_person" :key="filPerson.id">
+                    <tr>
+                        <td>{{p.name}}</td>
+                        <td>{{p.age}}</td>
+                        <td>{{p.sex}}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    keyword: '',
+                    // 原數組
+                    person: [
+                        { id: 001, name: 'John', age: 18, sex: '男' },
+                        { id: 002, name: 'Diva', age: 25, sex: '男' },
+                        { id: 003, name: 'Julie', age: 20, sex: '女' },
+                        { id: 004, name: 'Jon', age: 34, sex: '男' },
+                        { id: 005, name: 'had', age: 53, sex: '女' },
+                        { id: 006, name: 'Cse', age: 19, sex: '女' },
+                    ],
+                    // 過濾後數組
+                    filPerson: [],
+                }
+            },
+
+            // 使用 watch 實現，用 監視 keyword 來達到目的
+            // watch: {
+            //     keyword: {
+            //         // 所有的字符串其實都包含 ''(空字符串位於 0)
+            //         // immediate 的作用可以在頁面加載時強制執行一次。並且當時的 keyword 資料為 ''
+            //         immediate: true,
+            //         handler(val) {
+            //             // filter 可以對數組進行篩選，並且返回新數組
+            //             this.filPerson = this.person.filter((person) => {
+            //                 // indexOf 會返回查找到的資料位於數組中的第幾個，沒找到時返回 -1
+            //                 const name = person.name.toUpperCase();
+            //                 const age = person.age.toString();
+            //                 const valUpper = val.toUpperCase();
+            //                 return name.indexOf(valUpper) !== -1 || age.indexOf(valUpper) !== -1;
+            //             })
+            //         }
+            //     }
+            // },
+
+            // 使用 computed ，使用 computed 的特性 "當依賴像發生變化時" 會重新執行一次 來達到目的
+            // 當 keyword 更改時會觸發
+            computed: {
+                fil_person() {
+                    return this.person.filter((person) => {
+                        // indexOf 會返回查找到的資料位於數組中的第幾個，沒找到時返回 -1
+                        const name = person.name.toUpperCase();
+                        const age = person.age.toString();
+                        const valUpper = this.keyword.toUpperCase();
+                        // filter 必須 return (返回過濾後的數據)
+                        return name.indexOf(valUpper) !== -1 || age.indexOf(valUpper) !== -1;
+                    })
+                }
+            }
+        });
+        app.mount('.box');
+    </script>
+</body>
+
+</html>
