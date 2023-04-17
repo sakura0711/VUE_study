@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        .btn {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        * {
+            font: 500 16px/1.5 'Microsoft YaHei';
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h2>學生訊息</h2>
+        <div class="btn">
+            <button @click="student.age++">年齡加一</button>
+            <button @click="addSex">添加性別</button>
+            <button @click="modSex">修改性別到 (未知)</button>
+            <button @click="addFriend">在列表首位添加一位朋友</button>
+            <button @click="addHobby">添加一個愛好</button>
+            <button @click="modHobby">修改愛好</button>
+
+            <button @click="resetData">重製數據</button> <!-- 新增的按鈕 -->
+        </div>
+        姓名 : {{ student.name }} <br>
+        年齡 : {{ student.age }} <br>
+        <span v-show="student.sex">性別: {{ student.sex }}</span> <br>
+        愛好 :
+        <ul>
+            <template v-for="(hobby, index) in student.hobby" :key="index">
+                <li>{{ hobby }}</li>
+            </template>
+        </ul>
+
+        朋友 :
+
+        <table>
+            <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>年齡</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template v-for="(friends, index) in student.friends" :key="index">
+                    <tr>
+                        <td>{{ friends.name }}</td>
+                        <td>{{ friends.age }}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+
+
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    student: {
+                        name: 'sakura',
+                        age: 18,
+                        hobby: ['畫畫', '看書', '養貓咪'],
+                        friends: [
+                            { name: 'John', age: 20 },
+                            { name: 'Alice', age: 17 },
+                            { name: 'David', age: 23 },
+                        ],
+                    },
+                    initialStudent: null, // 新增一個用來存儲最初狀態的物件
+                }
+            },
+            methods: {
+                addSex() {
+                    // # ======= Vue 2 寫法，Vue3 中已被移除 ======= # // 
+
+                    // 可以使用 Vue.set 添加原本不存在的響應式屬性
+                    // set 方法可以在響應物件上加上屬性，使得此屬性也是響應的
+
+                    // Vue.set(this.student,'sex','女');
+
+                    // 也可以寫成 this.$set
+                    // this.$set(this.student, 'sex', '女');
+
+                    // # ======================================== # //
+
+
+
+                    // # ---------- Vue 3 使用 方法 ---------- # //
+
+                    // 直接添加實例對象即可 :D
+                    this.student['sex'] = '女';
+                },
+                modSex() {
+                    this.student.sex = '未知';
+                },
+                addFriend() {
+                    this.student.friends.unshift({ name: 'yukina', age: 18 });
+                },
+                addHobby() {
+                    this.student.hobby.push('追漫畫 :D');
+                },
+                modHobby() {
+                    this.student.hobby[1] = '看影片';
+                },
+                resetData() {
+                    // 把 student 物件恢復到最初的狀態
+                    this.student = JSON.parse(JSON.stringify(this.initialStudent));
+                },
+            },
+            mounted() {
+                /* 為甚麼不能使用 this.student = this.initialStudent 就好?
+                    => 在 JavaScript 中，物件是一種引用類型，而不是基本類型。
+                    這意味著當你將一個物件賦值給另一個變數時，實際上是將這個物件的參考傳遞給了新變數，而不是將物件本身複製一份。
+                    因此，修改新變數中的物件的任何部分都會影響原始物件，這可能不是你想要的效果。*/
+
+                /* 所以，使用 JSON.parse(JSON.stringify(obj)) 的方式可以避免這個問題，因為它會將整個物件轉換為字符串，然後再解析回物件。
+                    這樣做的好處是，可以完全複製原始物件，包括所有的屬性、方法和內部物件，而不需要擔心對原始物件造成任何影響。
+                    但需要注意的是，這種方式有一些限制，例如無法複製函數和循環引用，因此在使用時需要注意。 */
+
+                // 在實例創建後，把最初狀態的 student 物件存儲到 initialStudent 屬性中
+                this.initialStudent = JSON.parse(JSON.stringify(this.student));
+            },
+        });
+        app.mount('.box');
+    </script>
+</body>
+
+</html>
