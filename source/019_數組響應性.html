@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        p{
+            font: 600 18px/2 'Microsoft YaHei';
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <h2>Vue 3 中監測數組的變動</h2>
+        <p>vue 可以監測使用 index 值改變的數組</p>
+        <p>想讓 vue 監測到數組的變動可以使用 push、pop、shift、unshift...之類的操作數組的函數</p>
+
+        <button @click="addPersonI">添加新成員 使用 索引值操作</button>
+        <button @click="addPerson">添加新成員 使用 數組操作</button>
+        <ul>
+            <template v-for="(p, index) in person" :key="p.id">
+                <li>{{ p.name }} -- {{ p.age }}</li>
+            </template>
+        </ul>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    person: [
+                        { id: 001, name: 'John', age: 18, sex: '男' },
+                        { id: 002, name: 'Diva', age: 25, sex: '男' },
+                        { id: 003, name: 'Julie', age: 20, sex: '女' },
+                    ],
+                }
+            },
+            methods: {
+                addPerson: function () {
+                    let newPersonName = '';
+                    // let { id, name, age } = newPerson;
+                    // 定義新的 person
+                    const newPerson = {
+                        id: this.person.length + 1,
+                        name: '',
+                        age: 0
+                    };
+
+                    for (let i = 0; i < 5; i++) {
+                        let randomChar = String.fromCharCode(97 + Math.floor(Math.random()*26));
+                        newPersonName += randomChar;
+                    }
+                    newPerson.name = newPersonName;
+                    newPerson.age = Math.floor(Math.random()*70);
+
+                    this.person.push(newPerson);
+                },
+                addPersonI:function(){
+                    this.person[0].name = 'pink_pppp';
+                    console.error(this.person[0].name + '已經被更動了');
+                },
+            },
+            mounted() {
+                console.log(`app 掛載至 box`);
+                // vue2 中使用 app._data 查看 vue 管理的 data 屬性
+                // vue3 中使用 this 即可(指向此 app 實例)
+                console.warn(this);
+            },
+        });
+        app.mount('.box');
+
+    </script>
+</body>
+
+</html>
