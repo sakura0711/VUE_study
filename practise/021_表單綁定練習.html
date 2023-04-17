@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <style>
+        textarea {
+            resize: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+
+        <!-- v-model.trim 可以去除 "頭尾" 空白 -->
+        <label for="account">帳號</label> <input v-model.trim="userInfo.account" type="text" required> <br>
+        <label for="password">密碼</label> <input v-model.trim="userInfo.password" type="password" name="input_psd" id=""
+            required><br>
+        性別 : <input type="radio" name="input_sex" id="sex_M" v-model="userInfo.sex" value="男" required><label
+            for="sex_M">男性</label>
+        <input type="radio" name="input_sex" id="sex_F" v-model="userInfo.sex" value="女" required><label
+            for="sex_F">女性</label> <br>
+
+        <!-- v-model.number 可以將輸入的數字(字串型態)轉為 數字型態 ex."12" =>  12 -->
+        年齡: <label for="age"></label><input type="number" name="input_age" id="age" v-model.number="userInfo.age"><br>
+
+        <div class="hobby">
+            愛好 : <input type="checkbox" name="input_read" id="read" value="read" v-model="userInfo.hobby"><label
+                for="read">畫畫</label>
+            <input type="checkbox" name="input_cat" id="cat" v-model="userInfo.hobby" value="cat"><label
+                for="cat">貓咪</label>
+            <input type="checkbox" name="input_coding" id="coding" value="coding" v-model="userInfo.hobby"><label
+                for="coding">寫程式?</label>
+        </div>
+
+        所屬地區 : <select name="input_region" id="region" v-model="userInfo.region" required>
+            <option disabled value="">請選擇</option>
+            <option value="Taipei">台北</option>
+            <option value="Kaohsiung">高雄</option>
+            <option value="Tainan">台南</option>
+        </select><br>
+
+        其他訊息 :
+        <!-- cols 屬性可以設置一行"最大"輸入幾個字 -->
+        <!-- rows 屬性可以設置"最多"輸入幾列 -->
+        自我介紹一下吧!<br>
+        <!-- v-model.lazy 可以實現懶加載()，原本每輸入一個 vue 就會時時的更新 proxy，lazy 可以在該輸入框失去焦點時才更改數據-->
+        <textarea name="introduction" id="introduction" v-model.lazy="userInfo.introduction" cols="30"
+            rows="10"></textarea><br>
+
+        <input type="checkbox" name="agree" id="agree" v-model="userInfo.agree"><label for="agree">閱讀並接受 <a
+                href="#">用戶協議</a></label><br>
+
+        <input type="submit" value="提交" @click="sub=true">
+
+        <p v-show="sub">{{ showInfo() }}</p>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    userInfo: {
+                        account: '',
+                        password: '',
+                        sex: '',
+                        age: 0,
+                        hobby: [],
+                        region: '',
+                        introduction: '',
+
+                        // 用戶協議
+                        agree: true,
+                    },
+
+                    // 提交成功
+                    sub: false,
+                };
+            },
+            methods: {
+                showInfo() {
+                    return JSON.stringify(this.userInfo);
+                },
+            },
+        });
+        app.mount('.box');
+    </script>
+</body>
+
+</html>
