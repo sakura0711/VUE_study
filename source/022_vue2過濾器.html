@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+    <!-- 引入 moment.js 時間格式化庫-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+
+</head>
+
+<body>
+    <!-- !!!! filters 屬性已在 vue3 被移除 !!!! -->
+
+    <div class="box">
+        沒有使用 filter : {{ date }} <br>
+        <!-- 當使用  filters 後 date 為要處理的參數 | dataFormat 為處理的方法 -->
+        使用 filter : {{ date | dateFormat }} <br>
+        <!-- 並且 可以使用多個 filters，處理順序為 date -> dateFormat -> getDay (date 不會直接給 getDay 處理) -->
+        <!-- {{ date | dateFormat | getDay }} -->
+    </div>
+    <script>
+        // 要設定全局 filter 可以使用 
+        Vue.filter('mySlice', function (value) {
+            return value.slice(0, 4);
+        });
+
+        const app = Vue.createApp({
+            data() {
+                return {
+                    date: moment()
+                }
+            },
+            // 要使用 Vue 的過濾屬性可以將函數放置 filters 裡面
+            // 但是在 vue 實例中的 filters 只能由該實例調用
+            filters: {
+                dateFormat(value) {
+                    return value.format('D/MM/YYYY');
+                },
+            },
+        });
+        app.mount('.box');
+    </script>
+</body>
+
+</html>
