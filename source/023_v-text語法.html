@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <div class="box">
+        使用 "插值語法" : {{ name }}
+        <!-- 使用 v-text 時，會直接使用 裡面的值取代整個 DOM 的內容，所以使用 v-text 標籤裡面不會有其他內容 -->
+        使用 "v-text" : <span v-text="name">我不會被顯示出來</span>
+
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    name: 'sakura',
+                }
+            },
+        });
+        app.mount('.box');
+    </script>
+</body>
+
+</html>
