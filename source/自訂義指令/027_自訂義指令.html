@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <div class="box">
+        <h3>自訂義指令</h3>
+        <span>n值 : {{ n }}</span> <br>
+        <span>n套用 自訂義指令(n * 10) <span v-big="n"></span></span> <br>
+        <button @click="n++">n++</button><br>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    n: 0,
+                }
+            },
+            // 要使用自訂義指令 必須訂義在 directives 裡面
+            directives: {
+                // element 代表 DOM 節點 ，binding 代表所綁定對像
+                big(element, binding) {
+                    // 將 DOM 元素的文字 更改
+                    element.innerText = binding.value * 10;
+                }
+            }
+        });
+        app.mount('.box');
+    </script>
+</body>
+
+</html>
