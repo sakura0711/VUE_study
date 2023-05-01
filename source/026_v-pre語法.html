@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <div class="box">
+        <!-- 使用 v-pre 後 vue 會跳過該節點，(不進行解析) -->
+        <!-- 可以加快頁面 render 速度，不過須小心使用(避免 vue 無法解析) -->
+        <h2 v-pre 挖庫挖庫> :D </h2>
+        <h3 v-pre> 我被套上了 v-pre{{ magic }}</h3>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    magic: 0,
+                }
+            },
+        });
+        app.mount('.box');
+    </script>
+</body>
+
+</html>
