@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <div class="box">
+        <div class="no">
+            <h4>沒有添加 v-once</h4>
+            n 的值初始值是 : {{n}} <br>
+            n 的值是 {{n}} <br>
+            <button @click="n++">n++</button>
+        </div>
+        <div class="once">
+            <h4>添加 v-once</h4>
+            <!-- 添加 v-once 後，該節點初始 render 後就會變為靜態內容，不會跟隨數據變動 -->
+            <span v-once>m 的值初始值是 : {{m}} <br></span>
+            m 的值是 {{m}} <br>
+            <button @click="m++">m++</button>
+        </div>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    n: 0,
+                    m: 0,
+                }
+            },
+        });
+        app.mount('.box');
+    </script>
+</body>
+
+</html>
