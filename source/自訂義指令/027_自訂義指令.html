@@ -17,6 +17,7 @@
         <span>n值 : {{ n }}</span> <br>
         <span>n套用 自訂義指令(n * 10) <span v-big="n"></span></span> <br>
         <button @click="n++">n++</button><br>
+        <input type="text" v-focus>
     </div>
     <script>
         const app = Vue.createApp({
@@ -27,11 +28,34 @@
             },
             // 要使用自訂義指令 必須訂義在 directives 裡面
             directives: {
+
+                // # 函數式 -------------------------------
+
                 // element 代表 DOM 節點 ，binding 代表所綁定對像
                 big(element, binding) {
                     // 將 DOM 元素的文字 更改
                     element.innerText = binding.value * 10;
-                }
+                },
+
+                // # 對象式 --------------------------------
+
+                // vue 2 寫法 ，vue3 請見官網 https://vuejs.org/guide/reusability/custom-directives.html#introduction
+                // 使用對象式時，分成 3 個階段
+                vfocus: {
+                    // 1. 指令與元素成功綁定時
+                    bind() {
+                        console.log('[v-focus] bind');
+                    },
+                    // 2. 指令所在的元素被插入頁面時
+                    inserted(element) {
+                        console.log('[v-focus] inserted');
+                        element.focus();
+                    },
+                    // 3. 指令所在的模板被重新解析時
+                    update() {
+                        console.log('[v-focus] update');
+                    },
+                },
             }
         });
         app.mount('.box');
