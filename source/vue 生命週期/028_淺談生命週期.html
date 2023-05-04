@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入 Vue 全局變量 -->
+    <script src="https://unpkg.com/vue@next"></script>
+
+</head>
+
+<body>
+    <div class="box">
+        <h1 :style="{opacity}">Vue 好玩:D</h1>
+    </div>
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    opacity: 1,
+                }
+            },
+            methods: {
+                // 定義函數
+                change() {
+                    setInterval(() => {
+                        this.opacity -= 0.01;
+                        if (this.opacity <= 0) this.opacity = 1;
+                    }, 16);
+                },
+            },
+            // 更多生命週期 hook 請參考 https://cn.vuejs.org/api/options-lifecycle.html
+
+            // 在組件成功掛載 "前" 執行
+            beforeMount() {
+                console.log('app beforeMount');
+            },
+
+            // 在組件組件成功掛載 "後" 執行
+            mounted() {
+                console.log('app beforeMount');
+                this.change();
+            },
+        });
+        app.mount('.box');
+
+        // app.onMounted(() => {
+        //     change();
+        // });
+    </script>
+</body>
+
+</html>
