@@ -41,23 +41,39 @@
 
                 // vue 2 寫法 ，vue3 請見官網 https://vuejs.org/guide/reusability/custom-directives.html#introduction
                 // 使用對象式時，分成 3 個階段
-                vfocus: {
-                    // 1. 指令與元素成功綁定時
-                    bind() {
-                        console.log('[v-focus] bind');
-                    },
-                    // 2. 指令所在的元素被插入頁面時
-                    inserted(element) {
-                        console.log('[v-focus] inserted');
-                        element.focus();
-                    },
-                    // 3. 指令所在的模板被重新解析時
-                    update() {
-                        console.log('[v-focus] update');
-                    },
-                },
+                // vfocus: {
+                //     // 1. 指令與元素成功綁定時
+                //     bind() {
+                //         console.log('[v-focus] bind');
+                //     },
+                //     // 2. 指令所在的元素被插入頁面時
+                //     inserted(element) {
+                //         console.log('[v-focus] inserted');
+                //         element.focus();
+                //     },
+                //     // 3. 指令所在的模板被重新解析時
+                //     update() {
+                //         console.log('[v-focus] update');
+                //     },
+                // },
             }
         });
+        // ?? vue3 寫法 ??
+        app.directive('focus', {
+            // 1. 指令與元素成功綁定時
+            bind() {
+                console.log('[v-focus] bind');
+            },
+            // 2. 指令所在的元素被插入頁面時
+            inserted(element) {
+                console.log('[v-focus] inserted');
+                element.focus();
+            },
+            // 3. 指令所在的模板被重新解析時
+            update() {
+                console.log('[v-focus] update');
+            },
+        })
         app.mount('.box');
     </script>
 </body>
